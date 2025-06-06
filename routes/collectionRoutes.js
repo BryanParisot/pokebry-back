@@ -34,6 +34,7 @@ router.get(
 );
 router.get(
   "/collection/distribution/:user_id",
+  authenticateToken,
   collectionController.getItemTypeDistribution
 );
 
