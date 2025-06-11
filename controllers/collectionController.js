@@ -132,8 +132,21 @@ export const updateCollectionItem = async (req, res) => {
         .json({ message: "Élément introuvable ou non autorisé." });
     }
 
-    res.status(200).json({ message: "Élément mis à jour avec succès." });
+    const [rows] = await db.execute(
+      `SELECT * FROM collection WHERE id = ? AND user_id = ?`,
+      [itemId, userId]
+    );
+
+    if (rows.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Élément non trouvé après mise à jour." });
+    }
+
+    const updatedCard = rows[0];
+    return res.status(200).json(updatedCard); // 👈 On renvoie l’objet complet
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Erreur serveur." });
   }
 };
