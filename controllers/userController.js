@@ -58,13 +58,20 @@ export const login = async (req, res) => {
 
     const token = jwt.sign(
       { id: user.id, email: user.email },
-      process.env.JWT_SECRET, 
+      process.env.JWT_SECRET,
       { expiresIn: "2h" }
     );
 
     res.status(200).json({
       message: "Connexion réussie.",
-      user: { id: user.id, first_name: user.first_name, email: user.email },
+      user: {
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        created_at: user.created_at,
+        is_premium: user.is_premium,
+      },
       token,
     });
   } catch (err) {
